@@ -25,6 +25,12 @@ export const charsReducer = (state = initialState, action) => {
 				fetching: false,
 				errors: null
 			};
+		case FETCH_SWAPI_FAILURE:
+			return {
+				...state,
+				fetching: false,
+				errors: action.payload
+			};
 		default:
 			return state;
 	}
