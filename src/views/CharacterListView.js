@@ -2,34 +2,38 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { CharacterList } from "../components";
-// import actions
+import { fetchSwapiPeople } from "../actions";
+
+import Loader from "react-loader-spinner";
 
 class CharacterListView extends React.Component {
-  constructor() {
-    super();
-  }
+	constructor() {
+		super();
+	}
 
-  componentDidMount() {
-    // call our action
-  }
+	componentDidMount() {
+		this.props.fetchSwapiPeople();
+	}
 
-  render() {
-    if (this.props.fetching) {
-      // return something here to indicate that you are fetching data
-    }
-    return (
-      <div className="CharactersList_wrapper">
-        <CharacterList characters={this.props.characters} />
-      </div>
-    );
-  }
+	render() {
+		if (this.props.fetching) {
+			return <Loader type="ThreeDots" color="#000000" height={60} />;
+		}
+
+		return (
+			<div className="CharactersList_wrapper">
+				<CharacterList characters={this.props.characters} />
+			</div>
+		);
+	}
 }
 
-// our mapStateToProps needs to have two properties inherited from state
-// the characters and the fetching boolean
+const mapStateToProps = (state, ownProps) => ({
+	fetching: state.charsReducer.fetching,
+	characters: state.charsReducer.characters
+});
+
 export default connect(
-  null /* mapStateToProps replaces null here */,
-  {
-    /* action creators go here */
-  }
+	mapStateToProps,
+	{ fetchSwapiPeople }
 )(CharacterListView);
